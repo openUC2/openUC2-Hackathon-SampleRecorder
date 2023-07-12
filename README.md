@@ -42,14 +42,6 @@ Please refer to the project's GitHub repository for more detailed information, i
 ## Current State: Building the Prototype
 
 
-Transparent Tape under a microscope (Thoman)
-![](./IMAGES/2023-02-01-075829111.gif)
-
-Capturing particles trapped on a microscopy slide under a microscope
-![](./IMAGES/2023-02-06-093656930.gif)
-
-Trying to capture microplastic using  a crosspolarization microscopy scheme
-![](./IMAGES/2023-02-06-094908047.gif)
 
 Transparent cassette from Thoman
 ![](./IMAGES/IMG_20230131_215132.jpg)
@@ -60,45 +52,98 @@ Current prototype based on an ESP32 with a 28byj stepper motor and a GPS module
 The tape can be "played" in one directon only
 ![](./IMAGES/IMG_20230703_084540.jpg)
 
-Example UC2-based setup where the cassette can be adjust along one direction; Illumination and curing mechanism still missing
-![](./IMAGES/VID_20230206_170533.gif)
 
+## Current Results
+
+### CAD
+
+The Inventor DEsign Files can be found in the folder [INVENTOR](./INVENTOR)
+The STL printing files can be found in the folder [STL](./STL)
+
+### Images and Results
+
+We have made significant progress in the development of the continuous sample recorder. Here are some of the current results we have achieved:
+
+1. Transparent Tape Observation: We have observed transparent tape under a microscope, specifically using Thoman microscopy. This visualization helps us understand the characteristics of the tape and how particles may interact with it.
+
+   ![Transparent Tape under a microscope](./IMAGES/2023-02-01-075829111.gif)
+
+2. Particle Capture on Microscopy Slide: We have successfully captured particles trapped on a microscopy slide using the sample recorder. This demonstrates the device's ability to collect microscopic samples for further analysis.
+
+   ![Capturing particles trapped on a microscopy slide](./IMAGES/2023-02-06-093656930.gif)
+
+3. Microplastic Capture Attempt: We have also experimented with capturing microplastics using a cross-polarization microscopy scheme. This method helps in distinguishing microplastics from other particles based on their polarized light properties.
+
+   ![Trying to capture microplastic using a cross-polarization microscopy scheme](./IMAGES/2023-02-06-094908047.gif)
+
+4. UC2-Based Setup Example: We have an example setup based on UC2, where the cassette can be adjusted along one direction. However, the illumination and curing mechanisms are still missing in this setup.
+
+   ![Example UC2-based setup](./IMAGES/VID_20230206_170533.gif)
 
 ### Setting up and Adapting
 
-### Optical Setup
-
-
-### test Setup
-
-### Code
-
+To set up and adapt the continuous sample recorder, follow these steps:
 
 #### ESP32
 
+1. Use the UC2-ESP32 repository available at: [https://github.com/youseetoo/uc2-esp32/](https://github.com/youseetoo/uc2-esp32/).
 
-#### PYTHON
+2. Modify the `UC2_CassetteRecorder` configuration in the `PinConfig.h` file. Set the configuration in the `static UC2_CassetteRecorder pinConfig;` line. You can define the appropriate pin configuration for your setup here.
 
-#### Image Processing
+3. Compile the code using platform iO in Visual studio code and upload it to the ESP32.
 
+4. Connect the ULN2003 motor driver to the following pins on the ESP32:
+   - ROTATOR_X_0: GPIO_NUM_13
+   - ROTATOR_X_1: GPIO_NUM_14
+   - ROTATOR_X_2: GPIO_NUM_12
+   - ROTATOR_X_3: GPIO_NUM_27
 
-#### ImSwitch
+#### Python
 
-### How to set up?
+1. You can control the "rotator" using serial commands in Python. The following JSON command can be used to move the motor:
+   ```json
+   {
+       "task": "/rotator_act",
+       "motor": {
+           "steppers": [
+               {
+                   "stepperid": 2,
+                   "position": 10000,
+                   "speed": 500,
+                   "isabs": 0,
+                   "isaccel": 0
+               }
+           ]
+       }
+   }
+   ```
+   This command adjusts the position of the motor.
+
+2. You can also utilize the UC2-REST repository to control the rotator interface in Python. Here is an example script: [https://github.com/openUC2/UC2-REST/blob/master/uc2rest/TEST/TEST_ESP32_Serial.py#L23](https://github.com/openUC2/UC2-REST/blob/master/uc2rest/TEST/TEST_ESP32_Serial.py#L23). Additionally, the `rotator.py` file in the UC2-REST repository provides further functionality for controlling the rotator.
+
+Please refer to the respective repositories for more detailed instructions and implementation details. Feel free to explore and adapt the continuous sample recorder to suit your specific requirements.
 
 ## Safety
 
-## Challenge
+Stay safe
 
-### Varitions
+## Challenge: Enhancements for the Continuous Sample Recorder
 
-## When Goal is met?
+The continuous sample recorder project faces several challenges that need to be addressed for improved functionality and usability. Here are the main challenges along with proposed enhancements:
 
-- PArticles can be trapped on the record
-- tape is unrolled and rolled automatically
-- timestamp is correlated with GPS Data
-- A microscope captures the hole tape automatically
-- The nailpolish is dispensed and cured autoamtically
+1. Particle Trapping on the Record: To improve the efficiency of particle trapping, consider optimizing the design of the trapping mechanism. Explore options such as incorporating a slit or mesh that can effectively capture particles while minimizing the risk of particles escaping during sample collection.
+
+2. Automated Tape Unrolling and Rolling: Develop a motorized system that automates the tape unrolling and rolling process. This mechanism should precisely control the movement of the tape, ensuring consistent and reliable operation.
+
+3. Timestamp Correlation with GPS Data: Integrate the GY-GPS6MV2 GPS Module to accurately track the location of particle collection. This module provides reliable GPS data that can be correlated with the timestamps of sample collection. Ensure proper synchronization between the GPS module and the device's internal clock to maintain accurate timing.
+
+4. Automated Microscope Capture: Implement an automated system that captures the entire tape using a microscope. This can be achieved by developing a motorized stage or a tape transport mechanism that moves the tape systematically under the microscope. This automation simplifies the capturing process and ensures comprehensive analysis of the entire sample.
+
+5. Automated Nail Polish Dispensing and Curing: Enhance the process of applying and curing the UV nail polish on the tape. Develop an automated mechanism that dispenses the nail polish uniformly onto the tape surface. Integrate UV LED modules that can be controlled to provide consistent and precise curing of the nail polish, ensuring optimal stickiness for effective particle collection.
+
+6. Contrast Methods: Determine the most suitable contrast method for your specific requirements. Consider the advantages and limitations of different techniques such as brightfield, darkfield, and cross-polarization microscopy. Brightfield microscopy provides good overall visualization, while darkfield microscopy enhances the visibility of transparent particles. Cross-polarization microscopy helps in distinguishing polarized particles such as microplastics. Choose the contrast method that best suits your sample characteristics and objectives.
+
+By addressing these challenges and implementing the proposed enhancements, the continuous sample recorder will become a more efficient and reliable device for collecting microscopic samples.
 
 ## Ressources
 
